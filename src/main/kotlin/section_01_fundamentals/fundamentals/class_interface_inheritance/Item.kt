@@ -2,6 +2,7 @@ package section_01_fundamentals.fundamentals.class_interface_inheritance
 
 class Item() {
     var name: String = ""
+    var price: Double = 0.0
 
     constructor(_name: String) : this() { // secondary constructor
         name = _name
