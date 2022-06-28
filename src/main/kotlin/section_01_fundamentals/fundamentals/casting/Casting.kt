@@ -9,7 +9,7 @@ fun main() {
     checkType("TEST");
 
     castNumber(10.55)
-    //castNumber(10 )
+    castNumber(10 )
 
     val number = 10
     val numberDouble = number.toDouble()
@@ -30,6 +30,6 @@ fun checkType(type: Any) {
 
 fun castNumber(any: Any) {
     when(any) {
-        any as Double -> println("Value is double")
+        any as? Double -> println("Value is double")
     }
 }
