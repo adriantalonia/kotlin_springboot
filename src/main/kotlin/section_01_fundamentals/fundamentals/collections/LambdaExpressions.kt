@@ -16,5 +16,18 @@ fun main() {
     val multiplyResult = multiplyLambda(2, 3)
     println("multiplyResult: $multiplyResult")
 
+    val resultCal = calculate(2, 3) { a, b -> a * b }
+    println(resultCal)
 
+    val resultCal2 = calculate(2, 3) { a, b -> a + b }
+    println(resultCal2)
+
+}
+
+
+/**
+ * Higher order function
+ * **/
+fun calculate(x: Int, y: Int, op: (x: Int, y: Int) -> Int): Int {
+    return op(x, y)
 }
