@@ -18,7 +18,7 @@ data class Course(
     val topicsCovered: List<String>
 )
 
-enum class CourseCategory{
+enum class CourseCategory {
     DEVELOPEMENT,
     BUSINESS,
     DESIGN,
@@ -28,8 +28,8 @@ enum class CourseCategory{
 data class Instructor(
     val name: String,
     val age: Int,
-    val noOfCourses : Int,
-    val coursesTaught : List<Course>
+    val noOfCourses: Int,
+    val coursesTaught: List<Course>
 )
 
 
