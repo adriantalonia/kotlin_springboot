@@ -26,7 +26,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
     runtimeOnly("com.h2database:h2")
-    runtimeOnly("org.postgresql:postgresql")
+    //runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webflux")
     testImplementation("io.mockk:mockk:1.12.4")
