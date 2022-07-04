@@ -64,4 +64,17 @@ class CourseControllerIntgTest {
         assertEquals(3,courseDTOs!!.size)
     }
 
+    @Test
+    fun retrieveCourseById() {
+        val courseDTO = webTestClient.get()
+            .uri("/v1/courses/1")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(CourseDTO::class.java)
+            .returnResult()
+            .responseBody
+
+        assertEquals(1,courseDTO!!.id)
+    }
+
 }
