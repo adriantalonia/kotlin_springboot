@@ -3,8 +3,6 @@ package com.atr.kotlin_springboot_api.controller
 import com.atr.kotlin_springboot_api.dto.CourseDTO
 import com.atr.kotlin_springboot_api.repository.CourseRepository
 import com.atr.kotlin_springboot_api.util.courseEntityList
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,6 +10,9 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
+
+import org.junit.jupiter.api.Assertions.*
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -46,7 +47,7 @@ class CourseControllerIntgTest {
             .returnResult()
             .responseBody
 
-        Assertions.assertTrue {
+        assertTrue {
             savedCourseDTO!!.id != null
         }
     }
