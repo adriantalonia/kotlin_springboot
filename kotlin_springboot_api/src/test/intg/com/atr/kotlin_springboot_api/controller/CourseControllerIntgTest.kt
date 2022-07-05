@@ -1,6 +1,7 @@
 package com.atr.kotlin_springboot_api.controller
 
 import com.atr.kotlin_springboot_api.dto.CourseDTO
+import com.atr.kotlin_springboot_api.entity.Course
 import com.atr.kotlin_springboot_api.repository.CourseRepository
 import com.atr.kotlin_springboot_api.util.courseEntityList
 import org.junit.jupiter.api.BeforeEach
@@ -76,6 +77,51 @@ class CourseControllerIntgTest {
             .responseBody
 
         assertEquals(1,courseDTO!!.id)
+    }
+
+    @Test
+    fun updateCourseTest() {
+        val course = Course(
+            null,
+            "Build RestFul APis using SpringBoot and Kotlin", "Development"
+        )
+        courseRepository.save(course)
+
+        val updateCourseDTO = CourseDTO(
+            null,
+            "Build Kotlin", "Development 2"
+        )
+
+        var updatedCourse = webTestClient
+            .put()
+            .uri("/v1/courses/{id}", course.id)
+            .bodyValue(updateCourseDTO)
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(CourseDTO::class.java)
+            .returnResult()
+            .responseBody
+
+        assertEquals("Build Kotlin", updatedCourse!!.name)
+
+
+    }
+
+    @Test
+    fun deleteCourseTest() {
+        val course = Course(
+            null,
+            "Build RestFul APis using SpringBoot and Kotlin", "Development"
+        )
+        courseRepository.save(course)
+
+
+        var updatedCourse = webTestClient
+            .delete()
+            .uri("/v1/courses/{id}", course.id)
+            .exchange()
+            .expectStatus().isNoContent
+
     }
 
 }
