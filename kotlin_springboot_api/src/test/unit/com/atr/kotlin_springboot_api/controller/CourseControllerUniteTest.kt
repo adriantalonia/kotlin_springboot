@@ -9,11 +9,13 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.test.web.reactive.server.expectBody
 
 @WebMvcTest(controllers = [CourseController::class])
 @AutoConfigureWebTestClient
@@ -43,6 +45,46 @@ class CourseControllerUniteTest {
         Assertions.assertTrue {
             savedCourseDTO!!.id != null
         }
+    }
+
+    @Test
+    fun addCourseValidation() {
+        var courseDTO = CourseDTO(null, "", "")
+
+        every { courseServiceMock.addCourse(any()) } returns courseDTO(id = 1)
+
+        var response = webTestClient
+            .post()
+            .uri("/v1/courses")
+            .bodyValue(courseDTO)
+            .exchange()
+            .expectStatus().isBadRequest
+            .expectBody(String::class.java)
+            .returnResult()
+            .responseBody
+
+        assertEquals("category must not be blank, name must not be blank", response)
+    }
+
+    @Test
+    fun addCourseValidationRunTimeException() {
+        var courseDTO = CourseDTO(null, "test", "test")
+
+        val errorMessage = "Unexpected Error occurred"
+
+        every { courseServiceMock.addCourse(any()) } throws RuntimeException(errorMessage)
+
+        var response = webTestClient
+            .post()
+            .uri("/v1/courses")
+            .bodyValue(courseDTO)
+            .exchange()
+            .expectStatus().is5xxServerError
+            .expectBody(String::class.java)
+            .returnResult()
+            .responseBody
+
+        assertEquals(errorMessage, response)
     }
 
     @Test
@@ -85,7 +127,7 @@ class CourseControllerUniteTest {
     @Test
     fun updateCourseTest() {
 
-        every { courseServiceMock.updateCourse(any(), any()) } returns courseDTO(id = 100, name="Build Kotlin")
+        every { courseServiceMock.updateCourse(any(), any()) } returns courseDTO(id = 100, name = "Build Kotlin")
 
         val updateCourseDTO = CourseDTO(
             null,
@@ -109,7 +151,7 @@ class CourseControllerUniteTest {
     @Test
     fun deleteCourseTest() {
 
-        every { courseServiceMock.deleteCourse(any())} just runs
+        every { courseServiceMock.deleteCourse(any()) } just runs
 
         var updatedCourse = webTestClient
             .delete()
