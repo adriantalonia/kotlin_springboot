@@ -2,6 +2,7 @@ package com.atr.kotlin_springboot_api.util
 
 import com.atr.kotlin_springboot_api.dto.CourseDTO
 import com.atr.kotlin_springboot_api.entity.Course
+import com.atr.kotlin_springboot_api.entity.Instructor
 
 fun courseEntityList() = listOf(
     Course(
@@ -26,11 +27,10 @@ fun courseDTO(
 ) = CourseDTO(
     id,
     name,
-    category,
+    category
     //instructorId
 )
 
-/*
 fun courseEntityList(instructor: Instructor? = null) = listOf(
     Course(null,
         "Build RestFul APis using SpringBoot and Kotlin", "Development",
@@ -45,4 +45,4 @@ fun courseEntityList(instructor: Instructor? = null) = listOf(
 )
 
 fun instructorEntity(name : String = "Dilip Sundarraj")
-        = Instructor(null, name)*/
+        = Instructor(null, name)
