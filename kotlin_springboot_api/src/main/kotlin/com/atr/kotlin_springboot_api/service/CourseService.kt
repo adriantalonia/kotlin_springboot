@@ -3,19 +3,26 @@ package com.atr.kotlin_springboot_api.service
 import com.atr.kotlin_springboot_api.dto.CourseDTO
 import com.atr.kotlin_springboot_api.entity.Course
 import com.atr.kotlin_springboot_api.exception.CourseNotFoundException
+import com.atr.kotlin_springboot_api.exception.InstructorNotValidException
 import com.atr.kotlin_springboot_api.repository.CourseRepository
 import mu.KLogging
 import org.springframework.stereotype.Service
 
 @Service
-class CourseService(val courseRepository: CourseRepository) {
+class CourseService(val courseRepository: CourseRepository, val instructorService: InstructorService) {
 
     companion object : KLogging()
 
     fun addCourse(courseDTO: CourseDTO): CourseDTO {
 
+        val instructorOptional = instructorService.findByInstructorId(courseDTO.instructorId!!)
+
+        if (!instructorOptional.isPresent) {
+            throw InstructorNotValidException("Instructor not valid for the id: ${courseDTO.instructorId}")
+        }
+
         var courseEntity = courseDTO.let {
-            Course(null, it.name, it.category)
+            Course(null, it.name, it.category, instructorOptional.get())
         }
 
         courseRepository.save(courseEntity)
@@ -23,12 +30,12 @@ class CourseService(val courseRepository: CourseRepository) {
         logger.info("Saved course is: $courseEntity")
 
         return courseEntity.let {
-            CourseDTO(it.id, it.name, it.category)
+            CourseDTO(it.id, it.name, it.category, it.instructor?.id)
         }
 
     }
 
-    fun retrieveAllCourses(courseName: String): List<CourseDTO> {
+    fun retrieveAllCourses(courseName: String?): List<CourseDTO> {
 
         val courses = courseName?.let {
             courseRepository.findCoursesByName(courseName)
@@ -36,7 +43,7 @@ class CourseService(val courseRepository: CourseRepository) {
 
 
         return courses.map {
-            CourseDTO(it.id, it.name, it.category)
+            CourseDTO(it.id, it.name, it.category, it.instructor!!.id)
         }
 
         /*return courseRepository.findAll().map {
@@ -48,7 +55,7 @@ class CourseService(val courseRepository: CourseRepository) {
         return courseRepository.findById(id).let {
             if (it.isPresent) {
                 val course = it.get()
-                return CourseDTO(course.id, course.name, course.category)
+                return CourseDTO(course.id, course.name, course.category, course.instructor!!.id)
             } else {
                 return null
             }

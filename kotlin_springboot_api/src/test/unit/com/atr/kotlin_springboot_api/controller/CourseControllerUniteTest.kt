@@ -28,7 +28,7 @@ class CourseControllerUniteTest {
 
     @Test
     fun addCourse() {
-        var courseDTO = CourseDTO(null, "BUild Resfult APIs using Springboot and Kotlin", "Development")
+        var courseDTO = CourseDTO(null, "BUild Resfult APIs using Springboot and Kotlin", "Development", 1)
 
         every { courseServiceMock.addCourse(any()) } returns courseDTO(id = 1)
 
@@ -49,7 +49,7 @@ class CourseControllerUniteTest {
 
     @Test
     fun addCourseValidation() {
-        var courseDTO = CourseDTO(null, "", "")
+        var courseDTO = CourseDTO(null, "", "", 1)
 
         every { courseServiceMock.addCourse(any()) } returns courseDTO(id = 1)
 
@@ -68,7 +68,7 @@ class CourseControllerUniteTest {
 
     @Test
     fun addCourseValidationRunTimeException() {
-        var courseDTO = CourseDTO(null, "test", "test")
+        var courseDTO = CourseDTO(null, "test", "test", 1)
 
         val errorMessage = "Unexpected Error occurred"
 
@@ -105,7 +105,7 @@ class CourseControllerUniteTest {
             .returnResult()
             .responseBody
 
-        Assertions.assertEquals(2, courseDTOs!!.size)
+        assertEquals(2, courseDTOs!!.size)
     }
 
     @Test
