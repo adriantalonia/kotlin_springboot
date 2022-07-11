@@ -23,9 +23,9 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-  h2:
-    console:
-      enabled: true
+#  h2:
+#    console:
+#      enabled: true
 
 message: Hello from default profile
 #---
